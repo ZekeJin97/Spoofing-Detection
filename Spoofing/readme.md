@@ -108,7 +108,7 @@ Each feature type is L2-normalized before weighted combination and fed to a 4-la
 
 🔍 Note: Texture and depth analysis process the full input image, while patch and boundary features focus specifically on detected facial regions. This hybrid approach captures both facial authenticity patterns and image composition characteristics that differentiate real photos from generated content.
 
-# Samples
+# Sample
 <p align="center">
   <img src="realttest1.png" width="45%"/>
   <img src="realtest2.png" width="45%"/>
