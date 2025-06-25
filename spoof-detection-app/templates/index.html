@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Face Spoof Detection</title>
+  <style>
+    :root {
+      --bg: #121212;
+      --surface: #1e1e1e;
+      --text: #e0e0e0;
+      --text-muted: #888;
+      --primary: #bb86fc;
+      --real: #03dac6;
+      --fake: #cf6679;
+      --shadow: rgba(0,0,0,0.7);
+    }
+    * { box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', sans-serif;
+      margin: 2rem auto;
+      max-width: 600px;
+      position: relative;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    h1 {
+      font-size: 2rem;
+      margin: 0;
+      color: var(--primary);
+    }
+    .top-bar a {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-left: 1rem;
+    }
+    form {
+      background: var(--surface);
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    input[type="file"] {
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    button {
+      background: var(--primary);
+      color: var(--bg);
+      border: none;
+      border-radius: 4px;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+    button:hover { opacity: 0.9; }
+
+    .preview {
+      max-width: 80%;
+      max-height: 400px;
+      display: block;
+      margin: 1.5rem auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px var(--shadow);
+    }
+
+    .result {
+      background: var(--surface);
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 10px var(--shadow);
+      margin-top: 1rem;
+    }
+    .result.real { border-left: 5px solid var(--real); }
+    .result.fake { border-left: 5px solid var(--fake); }
+
+    .error-banner {
+      background: var(--fake);
+      color: #fff;
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+      text-align: center;
+      box-shadow: 0 4px 10px var(--shadow);
+      position: relative;
+    }
+    .error-banner button.dismiss {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      cursor: pointer;
+    }
+
+    /* Loading overlay */
+    #loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #loading-overlay.show { display: flex; }
+
+    #loading-overlay h2 {
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    #loading-walker {
+      width: 100%;
+      max-width: 400px;
+      display: block;
+      margin: 0 auto;
+    }
+    .feedback-form .radio-group {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <h1>Face Spoof Detection</h1>
+    <div>
+      <a href="{{ url_for('show_history') }}">History</a> |
+      <a href="{{ url_for('about') }}">About</a>
+    </div>
+  </div>
+
+  <form id="upload-form" method="post" enctype="multipart/form-data">
+    <input type="file" name="image" accept="image/*" required>
+      <p style="margin-top:0.75rem; font-size:0.85rem; color:#cf6679;">
+        By uploading an image, you agree that we will collect and store your
+        image and any feedback you provide for research and model-improvement purposes.</>
+      </p>
+    <button type="submit">Analyze</button>
+  </form>
+
+  {% if error %}
+    <div class="error-banner">
+      <button class="dismiss" onclick="this.parentElement.style.display='none'">&times;</button>
+      {{ error }}
+    </div>
+  {% endif %}
+
+  {% if filename %}
+    <img src="{{ url_for('static', filename='uploads/' ~ filename) }}"
+         class="preview" alt="Uploaded image">
+  {% endif %}
+
+ {% if label %}
+  <div class="result {{ label|lower }}">
+    Prediction: {{ label|upper }} ({{ confidence }})
+  </div>
+  <br>
+
+  {# only show the form if we haven’t yet received feedback #}
+  {% if not feedback %}
+    <form action="{{ url_for('feedback') }}" method="post" class="feedback-form">
+      <input type="hidden" name="filename"   value="{{ filename }}">
+      <input type="hidden" name="prediction" value="{{ label }}">
+      <input type="hidden" name="confidence" value="{{ confidence }}">
+      <p>Was this prediction correct?</p>
+      <div class="radio-group">
+        <label>
+          <input type="radio" name="correct" value="yes" required>
+          Yes
+        </label>
+        <label>
+          <input type="radio" name="correct" value="no">
+          No
+        </label>
+      </div>
+      <br>
+      <button type="submit">Submit Feedback</button>
+    </form>
+  {% endif %}
+
+  {# thank-you banner when feedback=True #}
+  {% if feedback %}
+    <div class="thank-you" style="
+        background: var(--real);
+        color: var(--bg);
+        padding: 0.75rem;
+        border-radius: 6px;
+        margin-top: 1rem;
+        text-align: center;
+        box-shadow: 0 4px 10px var(--shadow);
+      ">
+      Thank you for your feedback!
+    </div>
+  {% endif %}
+
+    <script>
+      const radios = document.querySelectorAll('input[name="correct"]');
+      const errOpts = document.getElementById('error-options');
+      radios.forEach(r => r.addEventListener('change', () => {
+        errOpts.style.display = (r.value==='no' && r.checked) ? 'block' : 'none';
+      }));
+    </script>
+  {% endif %}
+
+  <!-- Loading overlay -->
+  <div id="loading-overlay">
+    <h2>We are analyzing, please wait…</h2>
+    <img id="loading-walker"
+         src="{{ url_for('static', filename='walker.gif') }}"
+         alt="Loading…">
+  </div>
+
+  <script>
+    const overlay = document.getElementById('loading-overlay');
+    const form    = document.getElementById('upload-form');
+
+    // Show overlay when user clicks Analyze
+    form.addEventListener('submit', () => {
+      overlay.classList.add('show');
+    });
+
+    // Hide overlay when the new page (with results) finishes loading
+    window.addEventListener('load', () => {
+      overlay.classList.remove('show');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Analysis History</title>
+  <style>
+    :root {
+      --bg: #121212;
+      --surface: #1e1e1e;
+      --text: #e0e0e0;
+      --text-muted: #888;
+      --primary: #bb86fc;
+      --real: #03dac6;
+      --fake: #cf6679;
+      --shadow: rgba(0, 0, 0, 0.7);
+    }
+    * { box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', sans-serif;
+      margin: 2rem auto;
+      max-width: 900px;
+    }
+    h1 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Grid container: 5 cards per row */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat( auto-fill, minmax(160px, 1fr) );
+      gap: 1rem;
+    }
+
+    /* Each card */
+    .card {
+      background: var(--surface);
+      border-radius: 8px;
+      box-shadow: 0 4px 10px var(--shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.75rem;
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px var(--shadow);
+      margin-bottom: 0.75rem;
+    }
+
+    .card .meta {
+      width: 100%;
+      text-align: center;
+    }
+    .card .meta div {
+      margin: 0.25rem 0;
+    }
+    .card .filename {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      word-break: break-all;
+    }
+    .card .prediction.real {
+      color: var(--real);
+      font-weight: bold;
+    }
+    .card .prediction.fake {
+      color: var(--fake);
+      font-weight: bold;
+    }
+    .card .confidence {
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Analysis History</h1>
+  <a href="{{ url_for('index') }}">← Back to Upload</a>
+
+  {% if entries|length == 0 %}
+    <p>No analyses yet.</p>
+  {% else %}
+    <div class="grid">
+      {% for e in entries %}
+        <div class="card">
+          <img src="{{ url_for('static', filename='uploads/' ~ e.filename) }}"
+               alt="{{ e.filename }}">
+          <div class="meta">
+            <div class="prediction {{ e.label|lower }}">
+              {{ e.label|upper }}
+            </div>
+            <div class="confidence">{{ e.confidence }}</div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</body>
+</html>

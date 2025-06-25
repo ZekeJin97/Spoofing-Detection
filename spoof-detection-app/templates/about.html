@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About – Face Spoof Detector</title>
+  <style>
+    :root {
+      --bg: #121212;
+      --surface: #1e1e1e;
+      --text: #e0e0e0;
+      --text-muted: #888;
+      --primary: #bb86fc;
+      --shadow: rgba(0, 0, 0, 0.7);
+    }
+    * { box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', sans-serif;
+      margin: 2rem auto;
+      max-width: 700px;
+      line-height: 1.6;
+    }
+    h1 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+    a.back {
+      color: var(--primary);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+    .card {
+      background: var(--surface);
+      padding: 1.2rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px var(--shadow);
+      margin-bottom: 1.5rem;
+    }
+    .card h2 {
+      margin-top: 0;
+      color: var(--primary);
+      font-size: 1.3rem;
+    }
+    .card ul {
+      margin: 0.5rem 0 0 1rem;
+      padding: 0;
+      list-style: disc;
+    }
+    .card li {
+      margin-bottom: 0.5rem;
+    }
+    .card p {
+      margin-bottom: 0.75rem;
+    }
+    code {
+      background: #333;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    a.code-link {
+      color: var(--primary);
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <h1>🤖 Face Spoof Detector</h1>
+  <a class="back" href="{{ url_for('index') }}">← Back to Upload</a>
+
+  <div class="card">
+    <img
+      src="{{ url_for('static', filename='group4.png') }}"
+      alt="CS5330 Team"
+      style="max-width:100%; height:auto; display:block; margin-top:1rem;"
+    >
+  </div>
+
+  <div class="card">
+    <h2>Team</h2>
+    <p>This project was built by 4 students from CS5330, Northeastern University:</p>
+    <ul>
+      <li>Chieh‐Han, Chen</li>
+      <li>Jing Hui, Ng</li>
+      <li>Zhechao, Jin</li>
+      <li>Feiyan, Zhou</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>What’s This?</h2>
+    <p>
+      A playful yet powerful app that spots deepfakes in your photos. It fuses multiple clues—texture, depth, facial patches, and edge boundaries—into a single brainy MLP to call “REAL” or “FAKE.”
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Why It’s Cool</h2>
+    <ul>
+      <li>🔍 <strong>Texture & Edges:</strong> CLAHE + Sobel filters with ResNet18</li>
+      <li>👁️ <strong>Patches:</strong> Eyes, nose, mouth & more via MediaPipe</li>
+      <li>🕳️ <strong>Depth:</strong> MiDaS transformer for 3D cues</li>
+      <li>🧩 <strong>Boundary:</strong> Contour consistency to catch blending tricks</li>
+      <li>🚀 <strong>One-Click:</strong> Upload & get verdict + confidence</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Quick Start</h2>
+    <ul>
+      <li>🌐 Browse the code on GitHub:
+        <a class="code-link" href="https://github.khoury.northeastern.edu/jinggghui/CS5330_Su25_Group4/tree/main/Spoofing" target="_blank">
+          https://github.khoury.northeastern.edu/jinggghui/CS5330_Su25_Group4/tree/main/Spoofing
+        </a>
+      </li>
+      <li>🎯 Then use this web app to instantly check any face image!</li>
+    </ul>
+  </div>
+</body>
+</html>
