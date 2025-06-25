@@ -1,0 +1,10 @@
+numpy~=1.26.4
+scikit-learn~=1.6.1
+opencv-python~=4.11.0.86
+torch~=2.1.2+cu121
+mediapipe~=0.10.21
+torchvision~=0.16.2+cu121
+pillow~=11.2.1
+transformers~=4.39.3
+tqdm~=4.67.1
+requests~=2.32.3
