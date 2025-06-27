@@ -2,6 +2,15 @@
 
 This project presents a robust image-based face anti-spoofing system that integrates multiple visual features—including texture, depth, facial patches, and boundary cues—into a single fused representation. These features, both handcrafted and learned, are extracted from static RGB images and passed to a lightweight Multi-Layer Perceptron (MLP) classifier to determine whether the input is real or spoofed.
 
+
+# Samples
+<p align="center">
+  <img src="realttest1.png" width="45%"/>
+  <img src="realtest2.png" width="45%"/>
+   <img src="faketest1.png" width="45%"/>
+     <img src="faketest2.png" width="45%"/>
+</p>
+
 ---
 
 ## 📂 Dataset — `balanced_dataset/`  
@@ -107,12 +116,4 @@ Final feature vector: 4,426 dimensions
 Each feature type is L2-normalized before weighted combination and fed to a 4-layer MLP classifier with batch normalization and dropout.
 
 🔍 Note: Texture and depth analysis process the full input image, while patch and boundary features focus specifically on detected facial regions. This hybrid approach captures both facial authenticity patterns and image composition characteristics that differentiate real photos from generated content.
-
-# Samples
-<p align="center">
-  <img src="realttest1.png" width="45%"/>
-  <img src="realtest2.png" width="45%"/>
-   <img src="faketest1.png" width="45%"/>
-     <img src="faketest2.png" width="45%"/>
-</p>
 
