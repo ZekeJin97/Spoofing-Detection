@@ -19,12 +19,12 @@ This project presents a robust image-based face anti-spoofing system that integr
 ### RESULT
 
 <p align="center">
-  <img src="spoof_demo1.png" width="100%"/>
+  <img src="spoof-detection-app/spoof_demo1.png" width="100%"/>
 
 History
 
    
-  <img src="spoof_demo2.png" width="100%"/>
+  <img src="spoof-detection-app/spoof_demo2.png" width="100%"/>
 </p>
 
 ----
