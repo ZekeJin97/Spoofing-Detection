@@ -13,6 +13,22 @@ This project presents a robust image-based face anti-spoofing system that integr
 
 ---
 
+---
+
+## 📸 Sample Web Page Screenshots
+### RESULT
+
+<p align="center">
+  <img src="spoof_demo1.png" width="100%"/>
+
+History
+
+   
+  <img src="spoof_demo2.png" width="100%"/>
+</p>
+
+----
+
 ## 📂 Dataset — `balanced_dataset/`  
 **Download**: [Google Drive](https://drive.google.com/file/d/1p4gV3Z2x-2bUGVzhQc6v4hOnXpInGXbQ/view?usp=drive_link)
 
