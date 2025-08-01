@@ -15,13 +15,13 @@ This project presents a robust image-based face anti-spoofing system that integr
 
 ---
 
-## 📸 Sample Web Page Screenshots
-### RESULT
+# 📸 Sample Web Page Screenshots
+## RESULT
 
 <p align="center">
   <img src="spoof-detection-app/spoof_demo1.png" width="100%"/>
 
-History
+## History
 
    
   <img src="spoof-detection-app/spoof_demo2.png" width="100%"/>
